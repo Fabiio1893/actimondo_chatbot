@@ -269,7 +269,7 @@ with st.sidebar:
 
     # Key in Session für alle LLM-Calls ablegen
     st.session_state["OPENAI_API_KEY"] = OPENAI_API_KEY
-    st.success("OpenAI API Key aus secrets.toml geladen.")
+    #st.success("OpenAI API Key aus secrets.toml geladen.")
 
     st.markdown("---")
     st.markdown("### Neo4j Verbindung")
@@ -287,8 +287,8 @@ with st.sidebar:
     topk = st.slider("Top-K Tripel für Kontext", 5, 50, 25)
 
     st.markdown("---")
-    st.markdown("### Fixe Quelle")
-    st.markdown(f"- PDF: [{PDF_URL}]({PDF_URL})")
+    #st.markdown("### Fixe Quelle")
+    #st.markdown(f"- PDF: [{PDF_URL}]({PDF_URL})")
 
 # Driver erstellen + kurzer Connection-Test
 driver = get_driver(NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD)
