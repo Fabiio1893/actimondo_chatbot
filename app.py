@@ -258,8 +258,8 @@ AUFGABE:
 # ----------------------------
 # Streamlit UI
 # ----------------------------
-st.set_page_config(page_title="GraphRAG Chatbot", page_icon="🧠", layout="wide")
-st.title("🧠 GraphRAG Chatbot (Neo4j)")
+st.set_page_config(page_title="Atomondo Chatbot", page_icon="🧠", layout="wide")
+st.title("🧠 Atomondo Chatbot")
 
 with st.sidebar:
     st.markdown("### OpenAI")
@@ -331,4 +331,5 @@ if question:
             st.markdown(context if context else "_Kein Kontext gefunden._")
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
+
 
