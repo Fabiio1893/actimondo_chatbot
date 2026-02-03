@@ -329,6 +329,10 @@ with st.sidebar:
     hops = st.slider("Graph-Expansion (Hops)", 1, 4, 2)
     topk = st.slider("Top-K Tripel für Kontext", 5, 60, 30)
 
+    st.markdown("---")
+    debug = st.checkbox("🪲 Debug-Ausgaben anzeigen", value=False)
+
+
 
 # Driver + Connection-Test
 driver = get_driver(NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD)
@@ -337,6 +341,16 @@ try:
 except Exception as e:
     st.error(f"Neo4j Verbindung fehlgeschlagen: {e}")
     st.stop()
+
+if "debug" not in st.session_state:
+    st.session_state["debug"] = False
+st.session_state["debug"] = debug
+
+if debug:
+    stats = cypher_query(driver, "MATCH (n) RETURN count(n) AS nodeCount")
+    stats2 = cypher_query(driver, "MATCH ()-[r]->() RETURN count(r) AS relCount")
+    st.sidebar.write("Nodes:", stats[0]["nodeCount"] if stats else "n/a")
+    st.sidebar.write("Rels:", stats2[0]["relCount"] if stats2 else "n/a")
 
 
 if "messages" not in st.session_state:
