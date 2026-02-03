@@ -128,12 +128,18 @@ def seed_nodes(driver, terms: List[str], limit_per_term: int = 6) -> List[Dict[s
 
     q = """
     MATCH (n)
-    WHERE (exists(n.name) AND (toLower(n.name) = toLower($t) OR toLower(n.name) CONTAINS toLower($t)))
-       OR (exists(n.key)  AND (toLower(n.key)  CONTAINS toLower($t)))
-       OR (exists(n.normalizedKey) AND (toLower(n.normalizedKey) = toLower($t) OR toLower(n.normalizedKey) CONTAINS toLower($t)))
+    WITH n,
+        toLower(n.name) AS nameL,
+        toLower(n.key) AS keyL,
+        toLower(n.normalizedKey) AS normL
+    WHERE (n.name IS NOT NULL AND (nameL = toLower($t) OR nameL CONTAINS toLower($t)))
+    OR (n.key IS NOT NULL AND keyL CONTAINS toLower($t))
+    OR (n.normalizedKey IS NOT NULL AND (normL = toLower($t) OR normL CONTAINS toLower($t)))
     RETURN n.key AS key, n.name AS name, labels(n) AS labels
     LIMIT $lim
     """
+
+
     for t in terms:
         rows = cypher_query(driver, q, {"t": t, "lim": limit_per_term})
         for r in rows:
